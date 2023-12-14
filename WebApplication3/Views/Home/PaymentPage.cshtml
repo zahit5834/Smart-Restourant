@@ -1,0 +1,153 @@
+﻿
+@{
+    ViewData["Title"] = "PaymentPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="p-5">
+
+    <div class="container mx-auto">
+
+        <!-- Kart satır başlangıç -->
+        <div class="row mt-4 mx-auto">
+
+            <!--Kart Başlangıç-->
+            
+            <div class="col-md-auto">
+                <div class="card text-center bg-light" style="width:15rem; height:15rem;">
+                    <div class="card-body" style="">
+                        <div class="" style="height:33%">
+                        </div>
+                        <div class="" style="height:34%">
+                            <h5 class="card-title">Masa No</h5> <!-- Kart Masa No -->
+                            <p class="card-subtitle"> Fiyat</p> <!-- Kart Fiyat -->
+                        </div>
+                        <div class="" style="height:33%">
+                            <button type="button" class="btn btn-success bi-wallet2" data-bs-toggle="modal" data-bs-target="#OdemePopUp"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Kart Bitiş-->
+
+            <div class="col-md-auto">
+                <div class="card text-center bg-light" style="width:15rem; height:15rem;">
+                    <div class="card-body" style="">
+                        <div class="" style="height:33%">
+                        </div>
+                        <div class="" style="height:34%">
+                            <h5 class="card-title">Masa No</h5> <!-- Kart Masa No -->
+                            <p class="card-subtitle"> Fiyat</p> <!-- Kart Fiyat -->
+                        </div>
+                        <div class="" style="height:33%">
+                            <button type="button" class="btn btn-success bi-wallet2" data-bs-toggle="modal" data-bs-target="#OdemePopUp"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-auto">
+                <div class="card text-center bg-light" style="width:15rem; height:15rem;">
+                    <div class="card-body" style="">
+                        <div class="" style="height:33%">
+                        </div>
+                        <div class="" style="height:34%">
+                            <h5 class="card-title">Masa No</h5> <!-- Kart Masa No -->
+                            <p class="card-subtitle"> Fiyat</p> <!-- Kart Fiyat -->
+                        </div>
+                        <div class="" style="height:33%">
+                            <button type="button" class="btn btn-success bi-wallet2" data-bs-toggle="modal" data-bs-target="#OdemePopUp"> </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-auto">
+                <div class="card text-center bg-light" style="width:15rem; height:15rem;">
+                    <div class="card-body" style="">
+                        <div class="" style="height:33%">
+                        </div>
+                        <div class="" style="height:34%">
+                            <h5 class="card-title">Masa No</h5> <!-- Kart Masa No -->
+                            <p class="card-subtitle"> Fiyat</p> <!-- Kart Fiyat -->
+                        </div>
+                        <div class="" style="height:33%">
+                            <button type="button" class="btn btn-success bi-wallet2" data-bs-toggle="modal" data-bs-target="#OdemePopUp"> </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Kart Satır Bitiş -->
+    </div>
+
+    <!-- Pop Up Sepet Başlangıcı -->
+    <div class="modal fade" style="max-height:700px; overflow: auto;" id="OdemePopUp" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content bg-dark">
+                <div class="modal-header sticky-top">
+                    <h5 class="modal-title text-white" id="OdemePopUp">Masa no - Hesap</h5>
+                    <button type="button" class="btn-light btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body fixed-center">
+
+                    <!-- Sepet içerik kartı Başlangıcı -->
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-1 text-center">
+                                <div style="height:40%"></div>
+                                <div style="height:30%">
+                                    <input class="form-check-input mt-0" type="checkbox">
+                                </div>
+                                <div style="height:30%"></div>
+                            </div>
+                            <div class="col-md-11">
+                                <div class="card-body row">
+                                    <div class="col-md-8">
+                                        <div style="height:30%"></div>
+                                        <div style="height:40%">
+                                            <h5 class="card-title">Ürün Adı</h5> <!-- Ürün Başlık -->
+                                        </div>
+                                        <div style="height:30%"></div>
+                                        
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="text-end" style="height:30%"> </div>
+                                        <div class="text-end" style="height:40%">
+                                            <p class="text" style="margin-left:-5rem;">Adet:2</p>
+                                        </div>
+                                        <div class="text-end" style="height:30%">
+                                            <p class="text" style="margin-left:-5rem;">Fiyat:250TL</p>
+                                        </div>
+                                            
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- Sepet içerik kartı Bitişi -->
+
+                </div>
+                <div class="modal-footer sticky-bottom">
+                    <div class="text-end">
+                        
+                        <span class="bg-light rounded">&nbsp;Kalan&nbsp;&nbsp;&nbsp;: 3000TL&nbsp;</span><br /> <!-- Sepet Fiyatı Toplamı burada -->
+                        <span class="bg-light rounded">&nbsp;Toplam: 3000TL&nbsp;</span><br /> <!-- Sepet Fiyatı Toplamı burada -->
+
+                        <button type="button" class="btn btn-success">İkram</button>
+                        <button type="button" class="btn btn-success">Yemek Kartı</button>
+                        <button type="button" class="btn btn-success">Kredi Kartı</button>
+                        <button type="button" class="btn btn-success">Nakit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pop Up Sepet Bitişi -->
+
+    
+</div>

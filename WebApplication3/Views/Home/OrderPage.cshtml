@@ -1,0 +1,207 @@
+﻿@{
+ViewData["Title"] = "Sipariş Sayfası";
+}
+<nav class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
+    style="width: 280px; position: fixed; height:100%; overflow:auto;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-5 text-start">Smart Restourant Menü</span>
+    </a>
+    <hr>
+    <!--
+        Veri Tabanından Kategoriler çekilecek
+    -->
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="#" class="nav-link active" aria-current="page">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-white">
+                Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-white">
+                Orders
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-white">
+                Products
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-white">
+                Customers
+            </a>
+        </li>
+    </ul>
+</nav>
+
+
+<div class="" style="margin-left:300px;padding:1rem;">
+    <div class="text-end">
+        <button type="button" class="btn btn-dark bi-basket3-fill text-white" style="font-size: 2rem;" data-bs-toggle="modal" data-bs-target="#SepetPopUp">
+        </button>
+    </div>
+
+
+    <!-- Pop Up Sepet Başlangıcı -->
+    <div class="modal fade" style="max-height:700px; overflow: auto;" id="SepetPopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content bg-dark">
+                <div class="modal-header sticky-top">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Sepet</h5>
+                    <button type="button" class="btn-light btn-close text-white"  data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body fixed-center">
+
+                    <!-- Sepet içerik kartı Başlangıcı -->
+                    <div class="card mb-3" >
+                        <div class="row g-0">
+                            <div class="col-md-3">
+                                <div style="height:5%"></div>
+                                <div style="height:80%">
+                                    <img src="https://i.imgur.com/JIA9UlL_d.webp" class="img-fluid rounded-start mt-3 mx-2" style="height:120px;" alt="..."> <!-- Ürün Foto -->
+                                </div>
+                                <div style="height:15%"></div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body row">
+                                    <div class="col-md-8">
+                                        <h5 class="card-title">Başlık</h5> <!-- Ürün Başlık -->
+                                        <textarea class="form-control card-text" placeholder="Notunuzu Yazınız"></textarea> <!-- Ürün Notu yazılacak -->
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="text-end">
+                                            <button type="button" class="btn btn-dark bi-trash-fill text-white" ></button>
+
+                                            <div class="input-group mt-2">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-dark bi-dash-lg"></button>
+                                                </div>
+                                                <input type="text" class="form-control" value="1">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-dark bi-plus" ></button>
+                                                </div>
+                                            </div>
+                                            <p class=" mt-2" style="margin-left:-5rem;">Fiyat:250TL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sepet içerik kartı Bitişi -->
+
+                </div>
+                <div class="modal-footer sticky-bottom">
+                    <div class="text-end">
+                        <p class="text-white">Toplam: 3000TL</p> <!-- Sepet Fiyatı Toplamı burada -->
+                        <button type="button" class="btn btn-success">Siparişi Tamamla</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pop Up Sepet Bitişi -->
+
+    <!-- Ürün Liste Başlangıç -->
+
+    <div class="container mx-auto">
+        <div class="row mb-4"> <!-- Ürün Kartı Listesi Başlangıç -->
+
+            <!-- Ürün Kartı Başlangıç -->
+
+            <div class="col-md-auto"> 
+                <div class="card" style="width:15rem; height:22rem;">
+                    <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top"
+                        alt="..."><!--Veri Tabanından Fotoğraf bilgisi çekilecek -->
+                    <div class="card-body">
+                        <h5 class="card-title">ÇITIR TAVUK BURGER</h5>
+                        <!--VT den Yiyecek bilgisi çekilecek -->
+                        <h6 class="card-subtitle mb-2">Çıtır kalça eti, domates, göbek, tonkatsu sos;
+                            patates kızartması ile servis edilir.</h6>
+                        <!-- VT den Yiyecek Açıklaması Girilecek. -->
+                        
+                    </div>
+                    <div class="card-footer">
+                        
+                        <div class="text-end">
+                            
+                            <button class="btn btn-outline-dark">Sipariş Ver</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ürün Kartı Bitiş -->
+
+            <div class="col-md-auto"> 
+                <div class="card" style="width:15rem; height:22rem;">
+                    <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top"
+                        alt="..."><!--Veri Tabanından Fotoğraf bilgisi çekilecek -->
+                    <div class="card-body">
+                        <h5 class="card-title">ÇITIR TAVUK BURGER</h5>
+                        <!--VT den Yiyecek bilgisi çekilecek -->
+                        <h6 class="card-subtitle mb-2">Çıtır kalça eti, domates, göbek, tonkatsu sos;
+                            patates kızartması ile servis edilir.</h6>
+                        <!-- VT den Yiyecek Açıklaması Girilecek. -->
+                        
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-end">
+                            <button class="btn btn-outline-dark">Sipariş Ver</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-auto"> 
+                <div class="card" style="width:15rem; height:22rem;">
+                    <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top"
+                        alt="..."><!--Veri Tabanından Fotoğraf bilgisi çekilecek -->
+                    <div class="card-body">
+                        <h5 class="card-title">ÇITIR TAVUK BURGER</h5>
+                        <!--VT den Yiyecek bilgisi çekilecek -->
+                        <h6 class="card-subtitle mb-2">Çıtır kalça eti, domates, göbek, tonkatsu sos;
+                            patates kızartması ile servis edilir.</h6>
+                        <!-- VT den Yiyecek Açıklaması Girilecek. -->
+                        
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-end">
+                            <button class="btn btn-outline-dark">Sipariş Ver</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-auto"> 
+                <div class="card" style="width:15rem; height:22rem;">
+                    <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top"
+                        alt="..."><!--Veri Tabanından Fotoğraf bilgisi çekilecek -->
+                    <div class="card-body">
+                        <h5 class="card-title">ÇITIR TAVUK BURGER</h5>
+                        <!--VT den Yiyecek bilgisi çekilecek -->
+                        <h6 class="card-subtitle mb-2">Çıtır kalça eti, domates, göbek, tonkatsu sos;
+                            patates kızartması ile servis edilir.</h6>
+                        <!-- VT den Yiyecek Açıklaması Girilecek. -->
+                        
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-end">
+                            <button class="btn btn-outline-dark">Sipariş Ver</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Ürün Kartı Listesi Bitiş -->
+    </div>
+    <!-- Ürün Liste Bitiş -->
+</div>

@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "AdminPanel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <div class="row">
+        <div class="col-md-2">
+
+            <nav class="d-flex flex-column flex-shrink-0 p-3 mx-3 text-white bg-dark"
+                 style="width: 250px; height:100%; overflow:auto;">
+                <a href="AdminPanel" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 text-start">Admin Panel</span>
+                </a>
+                <hr>
+
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li>
+                        <a href="AdminPanelKategori" class="nav-link text-white">
+                            Kategori İşlemleri
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="AdminPanelUrun" class="nav-link text-white">
+                            Ürün İşlemleri
+                        </a>
+                    </li>
+                    <li>
+                        <a href="AdminPanelGunSonu" class="nav-link text-white">
+                            Gün Sonu
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+
+        </div>
+
+        <div class="col-md-10 pt-3 ml-3 text-white px-5 text-start mt-5">
+            <h2>Hoşgeldiniz</h2>
+
+        </div>
+    </div>
+</div>
