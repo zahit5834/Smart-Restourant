@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApplication3.Models;
+using Newtonsoft.Json.Linq;
 
 namespace WebApplication3.Controllers
 {
@@ -48,8 +49,47 @@ namespace WebApplication3.Controllers
         }
         public IActionResult AdminPanelUrun()
         {
+
+            Urunler urunler = new Urunler(); //urunler clasından yeni bir urun oluşturuyoruz
+            Kategoriler kategoriler = new Kategoriler(); //kategoriler clasından yeni bir urun oluşturuyoruz
+
+
+            Tuple<List<Urunler>, List<Kategoriler>> UrunKategoriTuple = new Tuple<List<Urunler>, List<Kategoriler>>
+                (
+                urunler.UrunGetir(),
+                kategoriler.KategorilerGetir()
+                );
+            return View(UrunKategoriTuple);
+        }
+        [HttpPost]
+        public ActionResult UrunAction(JObject jsonData)
+        {
+
+            Console.WriteLine("test");
+            Console.WriteLine(jsonData);
+
+            if (jsonData != null)
+            {
+                Console.WriteLine("veri geldi");
+                Console.WriteLine(jsonData);
+
+
+                //Urunler urun = new Urunler();
+                //urun.UrunOlustur(model.UrunAdi.ToString(), model.UrunAciklamasi.ToString(), Convert.ToInt32(model.KategoriId), Convert.ToDecimal(model.UrunFiyat), model.UrunFotografi.ToString());
+
+
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+
+
+        }
+
+        public IActionResult AdminPanelMasa()
+        {
             return View();
         }
+
         public IActionResult AdminPanelGunSonu()
         {
             return View();

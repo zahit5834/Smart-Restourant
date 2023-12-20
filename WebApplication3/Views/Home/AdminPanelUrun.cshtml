@@ -1,7 +1,10 @@
 ﻿@{
     ViewData["Title"] = "AdminPanelUrun";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
+@model Tuple<List<Urunler>, List<Kategoriler>>
+
 <div>
     <div class="row">
         <div class="col-md-2">
@@ -22,6 +25,11 @@
                     <li class="nav-item">
                         <a href="AdminPanelUrun" class="nav-link text-white">
                             Ürün İşlemleri
+                        </a>
+                    </li>
+                    <li>
+                        <a href="AdminPanelMasa" class="nav-link text-white">
+                            Masa İşlemleri
                         </a>
                     </li>
                     <li>
@@ -49,6 +57,7 @@
                                 <th scope="col">#ID</th>
                                 <th scope="col">Fotoğraf</th>
                                 <th scope="col">Ürün Adı</th>
+                                <th scope="col">Açıklama</th>
                                 <th scope="col">Kategori</th>
                                 <th scope="col">Güncelle</th>
                                 <th scope="col">Sil</th>
@@ -56,25 +65,32 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <!-- Tablo Satırı Başlangıç -->
-                                <th scope="row">1</th>
-                                <td>
-                                    <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top" style="width:64px;" alt="...">
-                                </td>
-                                <td>Çıtır Tavuk Burger</td>
-                                <td>Burger</td>
-                                <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#KategoriGuncelle"></button></td>
-                                <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td>
-                            </tr> <!-- Tablo Satırı Bitiş -->
+                                <!-- Tablo Satırı Başlangıç
+                                    <th scope="row">1</th>
+                                    <td>
+                                        <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top" style="width:64px;" alt="...">
+                                    </td>
+                                    <td>Çıtır Tavuk Burger</td>
+                                    <td>Açıklamalı Bişeyler</td>
+                                    <td>Burger</td>
+                                    <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#KategoriGuncelle"></button></td>
+                                    <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td>
+                                </tr> Tablo Satırı Bitiş -->
+                                @foreach (var urun in Model.Item1)
+                                {
+                                <tr>
+                                    <td scope="row">@urun.UrunId</td>
+                                    <td>
+                                        <img src="@urun.UrunFotografi" class="card-img-top" style="width:64px;" alt="...">
+                                    </td>
+                                    <td>@urun.UrunAdi</td>
+                                    <td>@urun.UrunAciklamasi</td>
+                                    <td>@urun.KategoriAdi</td>
+                                    <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#KategoriGuncelle"></button></td>
+                                    <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td>
+                                </tr>
+                                }
 
-                            <tr>
-                                <th scope="row">2</th>
-                                <td><img src="https://i.imgur.com/vrLNYkt_d.webp" class="card-img-top" style="width:64px;" alt="..."></td>
-                                <td>Çay</td>
-                                <td>Sıcak İçecek</td>
-                                <td> <button class="btn btn-dark bi-pencil"></button></td>
-                                <td> <button class="btn btn-dark bi-trash"></button></td>
-                            </tr>
 
                         </tbody>
                     </table>
@@ -152,6 +168,95 @@
                     </div>
                 </div>
                 <!-- Silme Pop Up Bitiş -->
+
+                <script>
+
+
+                    $(document).ready(function () {
+
+                        $('#UrunEkle').on('click', function () {
+
+
+
+                            var urunAdi = document.getElementById('UrunAdi').value;
+                            var urunAciklamasi = document.getElementById('UrunAciklamasi').value;
+                            var kategoriID = document.getElementById('KategoriId').value;
+                            var urunFiyati = document.getElementById('UrunFiyati').value;
+                            var urunFotografi = 'https://i.imgur.com/JIA9UlL_d.webp';
+
+
+                            var jsonData = JSON.stringify({
+                                UrunAdi: urunAdi,
+                                UrunAciklamasi: urunAciklamasi,
+                                KategoriID: kategoriID,
+                                UrunFiyati: urunFiyati,
+                                UrunFotografi: urunFotografi
+                            });
+
+
+                            console.log(jsonData);
+
+                            $.ajax({
+                                url: '/Home/UrunAction',
+                                type: 'POST',
+                                contentType: 'application/json; charset=utf-8',
+                                data: JSON.stringify(jsonData),
+                                success: function (result) {
+                                    console.log(result.status + ' İşlem başarılı');
+                                },
+                                error: function (error) {
+                                    console.error('Hata: ' + error.status);
+                                }
+                            });
+                        });
+                    });
+
+
+                    // function urunEkle() {
+                    //     var urunAdi = document.getElementById('UrunAdi').value;
+                    //     var urunAciklamasi = document.getElementById('UrunAciklamasi').value;
+                    //     var kategoriID = document.getElementById('KategoriId').value;
+                    //     var urunFiyati = document.getElementById('UrunFiyati').value;
+                    //     var urunFotografi = 'https://i.imgur.com/JIA9UlL_d.webp';
+
+
+                    //     var xhr = new XMLHttpRequest();
+
+                    //     xhr.onreadystatechange = function () {
+                    //         if (xhr.readyState == 4) // readyStatus 4 ise isteğimiz sunucu tarafında tamamlandığını iletir.
+                    //         {
+                    //             if (xhr.status = 200) {
+                    //                 alert('Ürün Başarıyla Eklendi!');
+                    //             }
+                    //             else {
+                    //                 alert('Ürün eklenirken hata oluştu!');
+                    //             }
+                    //         }
+                    //     };
+
+                    //     xhr.open('POST', '/HomeController/AdminPanelUrunAction', true); // burda sorun var
+                    //     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+                    //     var data = JSON.stringify({
+                    //         UrunAdi: urunAdi,
+                    //         UrunAciklamasi: urunAciklamasi,
+                    //         KategoriID: kategoriID,
+                    //         UrunFiyati: urunFiyati,
+                    //         UrunFotografi: urunFotografi
+                    //     });
+
+                    //     xhr.send(data);
+
+                    //     document.getElementById('UrunAdi').value = '';
+                    //     document.getElementById('UrunAciklamasi').value = '';
+                    //     document.getElementById('KategoriId').value = '';
+                    //     document.getElementById('UrunFiyati').value = '';
+                    //     document.getElementById('UrunFotografi').value = '';
+
+                    // }
+
+                </script>
+
                 <!-- Ekleme Pop Up Başlangıç -->
                 <div class="modal fade text-black" id="KategoriEkle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -160,44 +265,52 @@
                                 <h5 class="modal-title" id="">Ürün Ekle</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="input-group mb-3 mt-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-default" style="width:30%;">Ürün Adı</span>
-                                    <input type="text" class="form-control" style="width:70%;">
+
+
+                            <form id="EkleForm" action="/Controllers/HomeController.cs" method="post">
+                                <div class="modal-body">
+
+                                    <div class="input-group mb-3 mt-3">
+                                        <span class="input-group-text" id="inputGroup-sizing-default" style="width:30%;">Ürün Adı</span>
+                                        <input id="UrunAdi" name="UrunAdi" type="text" class="form-control" style="width:70%;">
+                                    </div>
+
+                                    <div class="input-group mb-3 mt-3">
+                                        <span class="input-group-text" style="width:30%;">Ürün Açıklaması</span>
+                                        <textarea id="UrunAciklamasi" name="UrunAciklamasi" class="form-control" aria-label="With textarea" style="width:70%;"></textarea>
+                                    </div>
+
+
+                                    <div class="input-group mb-3">
+                                        <label class="input-group-text" for="SelectKategori" style="width:30%;">Kategori</label> <!--  Veri tabanından çek  -->
+                                        <select id="KategoriId" name="KategoriId" class="form-select" style="width:70%;">
+                                            <option id="yok">Test</option>
+                                            @foreach (var kategori in Model.Item2)
+                                            {
+                                                <option id="@kategori.KategoriId">@kategori.KategoriId- @kategori.KategoriAdi</option>
+                                            }
+
+                                        </select>
+                                    </div>
+
+                                    <div class="input-group mb-3 mt-3">
+                                        <span class="input-group-text" id="inputGroup-sizing-default" style="width:30%;">Ürün Fiyatı</span>
+                                        <input id="UrunFiyati" name="UrunFiyati" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width:70%;">
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <label class="input-group-text" for="inputGroupFile01" style="width:30%;">Ürün Fotoğrafı</label>
+                                        <input id="UrunFotografi" name="UrunFotografi" type="file" class="form-control" style="width:70%;">
+                                    </div>
+
+
+
                                 </div>
-
-                                <div class="input-group mb-3 mt-3">
-                                    <span class="input-group-text" style="width:30%;">Ürün Açıklaması</span>
-                                    <textarea class="form-control" aria-label="With textarea" style="width:70%;"></textarea>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                    <button id="UrunEkle" type="button" class="btn btn-success">Ekle</button>
                                 </div>
-
-
-                                <div class="input-group mb-3">
-                                    <label class="input-group-text" for="SelectKategori" style="width:30%;">Kategori</label>
-                                    <select class="form-select" id="KategoriSecimi" style="width:70%;">
-                                        <option value="1">Burger</option>
-                                        <option value="2">Çorba</option>
-                                        <option value="3">Sıcak İçecek</option>
-                                    </select>
-                                </div>
-
-                                <div class="input-group mb-3 mt-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-default" style="width:30%;">Ürün Fiyatı</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width:70%;">
-                                </div>
-
-                                <div class="input-group mb-3">
-                                    <label class="input-group-text" for="inputGroupFile01" style="width:30%;">Ürün Fotoğrafı</label>
-                                    <input type="file" class="form-control" id="inputGroupFile01" style="width:70%;">
-                                </div>
-
-
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                                <button type="button" class="btn btn-success">Ekle</button>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

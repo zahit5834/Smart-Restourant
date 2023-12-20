@@ -1,7 +1,8 @@
 ﻿@{
-    ViewData["Title"] = "AdminPanelKategori";
+    ViewData["Title"] = "AdminPanelMasa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div>
     <div class="row">
         <div class="col-md-2">
@@ -12,7 +13,7 @@
                     <span class="fs-5 text-start">Admin Panel</span>
                 </a>
                 <hr>
-                
+
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li>
                         <a href="AdminPanelKategori" class="nav-link text-white">
@@ -35,6 +36,7 @@
                         </a>
                     </li>
 
+
                 </ul>
             </nav>
 
@@ -43,16 +45,16 @@
         <div class="col-md-10 pt-3 ml-3 ">
             <div class="text-white px-5">
 
-                <div class="" id="Kategori">
+                <div class="" id="Masa">
                     <div class="text-end mt-5">
-                        <button class="btn btn-light bi-plus" data-bs-toggle="modal" data-bs-target="#KategoriEkle"> Yeni Ekle</button>
+                        <button class="btn btn-light bi-plus" data-bs-toggle="modal" data-bs-target="#MasaEkle"> Yeni Ekle</button>
                     </div>
                     <!-- Tablo Başlangıç -->
                     <table class="table table-hover table-light mt-2">
                         <thead>
                             <tr>
                                 <th scope="col">#ID</th>
-                                <th scope="col">Kategori</th>
+                                <th scope="col">Masa Adi</th>
                                 <th scope="col">Güncelle</th>
                                 <th scope="col">Sil</th>
                             </tr>
@@ -61,9 +63,9 @@
                             <tr>
                                 <!-- Tablo Satırı Başlangıç -->
                                 <th scope="row">1</th>
-                                <td>Ana Yemek</td>
-                                <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#KategoriGuncelle"></button></td>
-                                <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td>
+                                <td>101</td>
+                                <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#MasaGuncelle"></button></td>
+                                <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#MasaSil"></button></td>
                             </tr> <!-- Tablo Satırı Bitiş -->
 
                             <tr>
@@ -79,18 +81,18 @@
                 </div>
 
                 <!-- Güncelleme Pop Up Başlangıç -->
-                <div class="modal fade text-black" id="KategoriGuncelle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade text-black" id="MasaGuncelle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="">Kategori Güncelle</h5>
+                                <h5 class="modal-title" id="">Masa Güncelle</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">ID</span>
                                     <input type="text" class="form-control" aria-label="ID" style="width:15%;" value="1" disabled>
-                                    <input type="text" class="form-control" aria-label="Name" style="width:75%;" value="Ana Yemek">
+                                    <input type="text" class="form-control" aria-label="Name" style="width:75%;" value="101">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -102,15 +104,15 @@
                 </div>
                 <!-- Güncelleme Pop Up Bitiş -->
                 <!-- Silme Pop Up Başlangıç -->
-                <div class="modal fade text-black" id="KategoriSil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade text-black" id="MasaSil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="">Kategori Sil</h5>
+                                <h5 class="modal-title" id="">Masa Sil</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <h5>Bu Kategori Silinsin Mi ?</h5>
+                                <h5>Bu Masa Silinsin Mi ?</h5>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
@@ -121,16 +123,16 @@
                 </div>
                 <!-- Silme Pop Up Bitiş -->
                 <!-- Ekleme Pop Up Başlangıç -->
-                <div class="modal fade text-black" id="KategoriEkle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade text-black" id="MasaEkle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="">Kategori Ekle</h5>
+                                <h5 class="modal-title" id="">Masa Ekle</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="input-group mb-3 mt-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-default">Kategori Adı</span>
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Masa Adı</span>
                                     <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                 </div>
                             </div>
