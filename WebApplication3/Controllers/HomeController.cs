@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using WebApplication3.Models;
-using Newtonsoft.Json.Linq;
-
 namespace WebApplication3.Controllers
 {
     public class HomeController : Controller
@@ -62,16 +62,20 @@ namespace WebApplication3.Controllers
             return View(UrunKategoriTuple);
         }
         [HttpPost]
-        public ActionResult UrunAction(JObject jsonData)
+        public ActionResult UrunAction(string jsonInput)
         {
 
             Console.WriteLine("test");
-            Console.WriteLine(jsonData);
-
-            if (jsonData != null)
+            Console.WriteLine(jsonInput);
+            JObject urun = JsonConvert.DeserializeObject<JObject>(jsonInput);
+            
+            if (jsonInput != null)
             {
+                Urunler urunreq = new Urunler();
+                urunreq.UrunOlustur(urun["urunAdi"].ToString(), urun["urunAciklamasi"].ToString(), Int32.Parse(urun["kategoriID"].ToString()), decimal.Parse(urun["urunFiyati"].ToString()), urun["urunFotografi"].ToString());
+                
                 Console.WriteLine("veri geldi");
-                Console.WriteLine(jsonData);
+                Console.WriteLine(jsonInput);
 
 
                 //Urunler urun = new Urunler();

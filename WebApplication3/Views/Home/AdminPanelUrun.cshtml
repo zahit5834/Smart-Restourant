@@ -185,13 +185,13 @@
                             var urunFotografi = 'https://i.imgur.com/JIA9UlL_d.webp';
 
 
-                            var jsonData = JSON.stringify({
-                                UrunAdi: urunAdi,
-                                UrunAciklamasi: urunAciklamasi,
-                                KategoriID: kategoriID,
-                                UrunFiyati: urunFiyati,
-                                UrunFotografi: urunFotografi
-                            });
+                            var jsonData = {
+                                urunAdi: urunAdi,
+                                urunAciklamasi: urunAciklamasi,
+                                kategoriID: kategoriID,
+                                urunFiyati: urunFiyati,
+                                urunFotografi: urunFotografi
+                            };
 
 
                             console.log(jsonData);
@@ -199,15 +199,16 @@
                             $.ajax({
                                 url: '/Home/UrunAction',
                                 type: 'POST',
-                                contentType: 'application/json; charset=utf-8',
-                                data: JSON.stringify(jsonData),
+                                dataType: 'JSON',
+                                data: { jsonInput: JSON.stringify(jsonData) },
                                 success: function (result) {
                                     console.log(result.status + ' İşlem başarılı');
                                 },
                                 error: function (error) {
-                                    console.error('Hata: ' + error.status);
+                                    console.error(error);
                                 }
                             });
+
                         });
                     });
 

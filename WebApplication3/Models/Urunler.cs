@@ -5,12 +5,12 @@ namespace WebApplication3.Models
 {
     public class Urunler
     {
-        public int UrunId { get; set; }
+        public int? UrunId { get; set; }
         public string? UrunAdi { get; set; }
         public string? UrunAciklamasi { get; set; }
         public string? KategoriAdi { get; set; }
-        public int KategoriId { get; set; }
-        public decimal UrunFiyat { get; set; }
+        public int? KategoriId { get; set; }
+        public decimal? UrunFiyat { get; set; }
         public string? UrunFotografi { get; set; }
 
 
