@@ -5,7 +5,7 @@ namespace WebApplication3.Models
 {
     public class Urunler
     {
-        public int? UrunId { get; set; }
+        public int UrunId { get; set; }
         public string? UrunAdi { get; set; }
         public string? UrunAciklamasi { get; set; }
         public string? KategoriAdi { get; set; }
@@ -16,8 +16,11 @@ namespace WebApplication3.Models
 
         List<Urunler> urunListesi = new List<Urunler>();
 
-        public void UrunOlustur(string UrunAdi, string UrunAciklamasi,  int KategoriId, decimal UrunFiyat, string UrunFotografi)
+        public void UrunOlustur(string UrunAdi, string UrunAciklamasi, int KategoriId, decimal UrunFiyat, string UrunFotografi)
         {
+
+            Console.WriteLine(UrunAdi + " " + UrunAciklamasi + " " + KategoriId + " " + UrunFiyat + " " + UrunFotografi +"\n\n");
+            /*
             Urunler urunler = new Urunler()
             {
                 UrunAdi = UrunAdi,
@@ -26,20 +29,26 @@ namespace WebApplication3.Models
                 UrunFiyat = UrunFiyat,
                 UrunFotografi = UrunFotografi
             };
+            */
+            string? foto = UrunFotografi;
 
-            string query = "INSERT INTO Urunler (UrunAdi, UrunAciklamasi, KategoriId, UrunFiyati, UrunFotografi) VALUES (@UrunId, @UrunAdi, UrunAciklamasi, KategoriId, UrunFiyati, UrunFotografi)";
+            //string query = "INSERT INTO Urunler (UrunAdi, UrunAciklamasi, KategoriID, UrunFiyati, UrunFotografi) VALUES (@UrunAdi, UrunAciklamasi, KategoriId, UrunFiyati, UrunFotografi)";
 
+
+            string query = "INSERT INTO Urunler (UrunAdi, UrunAciklamasi, KategoriID, UrunFiyati, UrunFotografi) VALUES ('"+UrunAdi+"', '" + UrunAciklamasi +"', " + KategoriId+", " + UrunFiyat + ", " + " '" + foto.ToString()+"');";
+            Console.WriteLine(query);
             string connectionString = $"Data Source=localhost;Initial Catalog=SR_db;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query,connection))
                 {
+                    /*
                     command.Parameters.AddWithValue("@UrunAdi", UrunAdi);
                     command.Parameters.AddWithValue("@UrunAciklamasi", UrunAciklamasi);
                     command.Parameters.AddWithValue("@KategoriId", KategoriId);
                     command.Parameters.AddWithValue("@UrunFiyati", UrunFiyat);
                     command.Parameters.AddWithValue("@UrunFotografi", UrunFotografi);
-
+                    */
 
                     try
                     {
@@ -58,17 +67,12 @@ namespace WebApplication3.Models
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Hata:" + ex);
+                        Console.WriteLine("Hata:" + ex.Message);
                     }
 
                 }
 
             }
-
-
-
-
-
         }
         public void UrunSil(int UrunId)
         {

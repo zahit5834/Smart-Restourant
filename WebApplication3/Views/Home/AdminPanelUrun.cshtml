@@ -65,17 +65,17 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <!-- Tablo Satırı Başlangıç
+                                <!-- Tablo Satırı Başlangıç -->
                                     <th scope="row">1</th>
                                     <td>
-                                        <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top" style="width:64px;" alt="...">
+                                        <img src="/img/burger.webp" class="card-img-top" style="width:64px;" alt="...">
                                     </td>
                                     <td>Çıtır Tavuk Burger</td>
                                     <td>Açıklamalı Bişeyler</td>
                                     <td>Burger</td>
                                     <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#KategoriGuncelle"></button></td>
                                     <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td>
-                                </tr> Tablo Satırı Bitiş -->
+                                </tr><!-- Tablo Satırı Bitiş -->
                                 @foreach (var urun in Model.Item1)
                                 {
                                 <tr>
@@ -174,15 +174,27 @@
 
                     $(document).ready(function () {
 
+
                         $('#UrunEkle').on('click', function () {
 
 
+                            var selectElement = document.getElementById('KategoriId');
+
+                            // seçilen option'ın index'ini al
+                            var selectedIndex = selectElement.selectedIndex;
+
+                            // seçili option'ın id'sini al
+                            var selectedOptionId = selectElement.options[selectedIndex].id;
+
+
+
+                            console.log("Seçili Option ID: " + selectedOptionId);
 
                             var urunAdi = document.getElementById('UrunAdi').value;
                             var urunAciklamasi = document.getElementById('UrunAciklamasi').value;
-                            var kategoriID = document.getElementById('KategoriId').value;
+                            var kategoriID = selectedOptionId;
                             var urunFiyati = document.getElementById('UrunFiyati').value;
-                            var urunFotografi = 'https://i.imgur.com/JIA9UlL_d.webp';
+                            var urunFotografi = "\\wwwroot\\img\\burger.jpg";
 
 
                             var jsonData = {

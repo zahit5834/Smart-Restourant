@@ -26,4 +26,8 @@
     <Folder Include="wwwroot\lib\jquery\dist\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\img\burger.webp" />
+  </ItemGroup>
+
 </Project>

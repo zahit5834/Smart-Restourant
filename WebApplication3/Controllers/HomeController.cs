@@ -65,17 +65,14 @@ namespace WebApplication3.Controllers
         public ActionResult UrunAction(string jsonInput)
         {
 
-            Console.WriteLine("test");
-            Console.WriteLine(jsonInput);
             JObject urun = JsonConvert.DeserializeObject<JObject>(jsonInput);
-            
             if (jsonInput != null)
             {
+
                 Urunler urunreq = new Urunler();
                 urunreq.UrunOlustur(urun["urunAdi"].ToString(), urun["urunAciklamasi"].ToString(), Int32.Parse(urun["kategoriID"].ToString()), decimal.Parse(urun["urunFiyati"].ToString()), urun["urunFotografi"].ToString());
                 
-                Console.WriteLine("veri geldi");
-                Console.WriteLine(jsonInput);
+                
 
 
                 //Urunler urun = new Urunler();
