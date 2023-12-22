@@ -16,10 +16,39 @@ namespace WebApplication3.Models
 
         List<Urunler> urunListesi = new List<Urunler>();
 
+        public string FotografCek(string kaynak)
+        {
+            string hedef = @"\img\";
+            string dosyayolu = hedef;
+            char[] kaynakArray = kaynak.ToCharArray();
+            Array.Reverse(kaynakArray);
+            char karakter = '\\';
+            //File.Copy(kaynak,hedef);
+
+            //  "\\wwwroot\\img\\burger.jpg"
+            int index = Array.IndexOf(kaynakArray, karakter);
+            if (index != -1)
+            {
+                Console.WriteLine("Var");
+                for (int i = index - 1; i >= 0; i--)
+                {
+                    dosyayolu += kaynakArray[i];
+                }
+
+                Console.WriteLine(dosyayolu);
+            }
+            else
+            {
+                Console.WriteLine("yok");
+            }
+            return dosyayolu;
+
+        }
+
         public void UrunOlustur(string UrunAdi, string UrunAciklamasi, int KategoriId, decimal UrunFiyat, string UrunFotografi)
         {
 
-            Console.WriteLine(UrunAdi + " " + UrunAciklamasi + " " + KategoriId + " " + UrunFiyat + " " + UrunFotografi +"\n\n");
+            Console.WriteLine(UrunAdi + " " + UrunAciklamasi + " " + KategoriId + " " + UrunFiyat + " " + UrunFotografi + "\n\n");
             /*
             Urunler urunler = new Urunler()
             {
@@ -30,17 +59,17 @@ namespace WebApplication3.Models
                 UrunFotografi = UrunFotografi
             };
             */
-            string? foto = UrunFotografi;
+            string? foto = FotografCek(UrunFotografi);
 
             //string query = "INSERT INTO Urunler (UrunAdi, UrunAciklamasi, KategoriID, UrunFiyati, UrunFotografi) VALUES (@UrunAdi, UrunAciklamasi, KategoriId, UrunFiyati, UrunFotografi)";
 
 
-            string query = "INSERT INTO Urunler (UrunAdi, UrunAciklamasi, KategoriID, UrunFiyati, UrunFotografi) VALUES ('"+UrunAdi+"', '" + UrunAciklamasi +"', " + KategoriId+", " + UrunFiyat + ", " + " '" + foto.ToString()+"');";
+            string query = "INSERT INTO Urunler (UrunAdi, UrunAciklamasi, KategoriID, UrunFiyati, UrunFotografi) VALUES ('" + UrunAdi + "', '" + UrunAciklamasi + "', " + KategoriId + ", " + UrunFiyat + ", " + " '" + foto.ToString() + "');";
             Console.WriteLine(query);
             string connectionString = $"Data Source=localhost;Initial Catalog=SR_db;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                using (SqlCommand command = new SqlCommand(query,connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     /*
                     command.Parameters.AddWithValue("@UrunAdi", UrunAdi);
@@ -60,7 +89,7 @@ namespace WebApplication3.Models
                         {
                             Console.WriteLine("Ürün Eklendi");
                         }
-                        else 
+                        else
                         {
                             Console.WriteLine("Ürün eklenemdi");
                         }

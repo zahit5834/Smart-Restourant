@@ -54,6 +54,7 @@
                     <table class="table table-hover table-light mt-2">
                         <thead>
                             <tr>
+                                <th scope="col">Seç</th>
                                 <th scope="col">#ID</th>
                                 <th scope="col">Fotoğraf</th>
                                 <th scope="col">Ürün Adı</th>
@@ -64,21 +65,24 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <!--
                             <tr>
-                                <!-- Tablo Satırı Başlangıç -->
-                                    <th scope="row">1</th>
-                                    <td>
-                                        <img src="/img/burger.webp" class="card-img-top" style="width:64px;" alt="...">
-                                    </td>
-                                    <td>Çıtır Tavuk Burger</td>
-                                    <td>Açıklamalı Bişeyler</td>
-                                    <td>Burger</td>
-                                    <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#KategoriGuncelle"></button></td>
-                                    <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td>
-                                </tr><!-- Tablo Satırı Bitiş -->
-                                @foreach (var urun in Model.Item1)
-                                {
+                             Tablo Satırı Başlangıç
+                                <th scope="row">1</th>
+                                <td>
+                                    <img src="/img/burger.webp" class="card-img-top" style="width:64px;" alt="...">
+                                </td>
+                                <td>Çıtır Tavuk Burger</td>
+                                <td>Açıklamalı Bişeyler</td>
+                                <td>Burger</td>
+                                <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#KategoriGuncelle"></button></td>
+                                <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td>
+                            </tr> Tablo Satırı Bitiş
+                            -->
+                            @foreach (var urun in Model.Item1)
+                            {
                                 <tr>
+                                    <td id="@urun.UrunId"><input onclick="urunSil(this, @urun.UrunId)" class="form-check-input" type="checkbox" /></td>
                                     <td scope="row">@urun.UrunId</td>
                                     <td>
                                         <img src="@urun.UrunFotografi" class="card-img-top" style="width:64px;" alt="...">
@@ -86,16 +90,85 @@
                                     <td>@urun.UrunAdi</td>
                                     <td>@urun.UrunAciklamasi</td>
                                     <td>@urun.KategoriAdi</td>
-                                    <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#KategoriGuncelle"></button></td>
-                                    <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td>
+                                    <td> <button  class="btn btn-dark bi-pencil"></button></td> <!-- data-bs-toggle="modal" data-bs-target="#KategoriGuncelle" -->
+                                    <td> <button onclick="urunSilModal(this, @urun.UrunId)" class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td> <!--  data-bs-toggle="modal" data-bs-target="#KategoriSil" -->
                                 </tr>
-                                }
-
-
+                            }
                         </tbody>
                     </table>
                     <!-- Tablo Tablo Bitiş -->
                 </div>
+
+                <script>
+
+                    function urunSilModal(button, veri) {
+
+                        // SilinecekUrunId
+                        // Seçili checkbox'ın id'sini al
+                        document.getElementById('SilinecekUrunId').value = veri;
+                        console.log(veri);
+
+                    }
+                    // urun id çekildi ve silme işlemi yapılacak
+                    $(document).ready(function () {
+
+
+
+
+                        $('#UrunEkle').on('click', function () {
+
+
+                            var selectElement = document.getElementById('KategoriId');
+
+                            // seçilen option'ın index'ini al
+                            var selectedIndex = selectElement.selectedIndex;
+
+                            // seçili option'ın id'sini al
+                            var selectedOptionId = selectElement.options[selectedIndex].id;
+
+
+
+                            console.log("Seçili Option ID: " + selectedOptionId);
+
+                            var urunAdi = document.getElementById('UrunAdi').value;
+                            var urunAciklamasi = document.getElementById('UrunAciklamasi').value;
+                            var kategoriID = selectedOptionId;
+                            var urunFiyati = document.getElementById('UrunFiyati').value;
+                            var urunFotografi = document.getElementById('UrunFotografi').value;
+                            // var urunFotografi = "\\wwwroot\\img\\burger.jpg";
+
+
+                            var jsonData = {
+                                urunAdi: urunAdi,
+                                urunAciklamasi: urunAciklamasi,
+                                kategoriID: kategoriID,
+                                urunFiyati: urunFiyati,
+                                urunFotografi: urunFotografi
+                            };
+
+
+                            console.log(jsonData);
+
+                            $.ajax({
+                                url: '/Home/UrunAction',
+                                type: 'POST',
+                                dataType: 'JSON',
+                                data: { jsonInput: JSON.stringify(jsonData) },
+                                success: function (result) {
+                                    console.log(result.status + ' İşlem başarılı');
+                                },
+                                error: function (error) {
+                                    console.error(error);
+                                }
+                            });
+                            location.reload();
+                        });
+
+                        $('#iptal').on('click', function () {
+                            location.reload();
+                        });
+                    });
+                </script>
 
                 <!-- Güncelleme Pop Up Başlangıç -->
                 <div class="modal fade text-black" id="KategoriGuncelle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -142,7 +215,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                <button id="iptal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
                                 <button type="button" class="btn btn-success">Kaydet</button>
                             </div>
                         </div>
@@ -159,117 +232,16 @@
                             </div>
                             <div class="modal-body">
                                 <h5>Bu Ürün Silinsin Mi ?</h5>
+                                <input type="text" id="SilinecekUrunId" name="SilinecekUrunId">
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                <button id="iptal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
                                 <button type="button" class="btn btn-danger">Sil</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Silme Pop Up Bitiş -->
-
-                <script>
-
-
-                    $(document).ready(function () {
-
-
-                        $('#UrunEkle').on('click', function () {
-
-
-                            var selectElement = document.getElementById('KategoriId');
-
-                            // seçilen option'ın index'ini al
-                            var selectedIndex = selectElement.selectedIndex;
-
-                            // seçili option'ın id'sini al
-                            var selectedOptionId = selectElement.options[selectedIndex].id;
-
-
-
-                            console.log("Seçili Option ID: " + selectedOptionId);
-
-                            var urunAdi = document.getElementById('UrunAdi').value;
-                            var urunAciklamasi = document.getElementById('UrunAciklamasi').value;
-                            var kategoriID = selectedOptionId;
-                            var urunFiyati = document.getElementById('UrunFiyati').value;
-                            var urunFotografi = "\\wwwroot\\img\\burger.jpg";
-
-
-                            var jsonData = {
-                                urunAdi: urunAdi,
-                                urunAciklamasi: urunAciklamasi,
-                                kategoriID: kategoriID,
-                                urunFiyati: urunFiyati,
-                                urunFotografi: urunFotografi
-                            };
-
-
-                            console.log(jsonData);
-
-                            $.ajax({
-                                url: '/Home/UrunAction',
-                                type: 'POST',
-                                dataType: 'JSON',
-                                data: { jsonInput: JSON.stringify(jsonData) },
-                                success: function (result) {
-                                    console.log(result.status + ' İşlem başarılı');
-                                },
-                                error: function (error) {
-                                    console.error(error);
-                                }
-                            });
-
-                        });
-                    });
-
-
-                    // function urunEkle() {
-                    //     var urunAdi = document.getElementById('UrunAdi').value;
-                    //     var urunAciklamasi = document.getElementById('UrunAciklamasi').value;
-                    //     var kategoriID = document.getElementById('KategoriId').value;
-                    //     var urunFiyati = document.getElementById('UrunFiyati').value;
-                    //     var urunFotografi = 'https://i.imgur.com/JIA9UlL_d.webp';
-
-
-                    //     var xhr = new XMLHttpRequest();
-
-                    //     xhr.onreadystatechange = function () {
-                    //         if (xhr.readyState == 4) // readyStatus 4 ise isteğimiz sunucu tarafında tamamlandığını iletir.
-                    //         {
-                    //             if (xhr.status = 200) {
-                    //                 alert('Ürün Başarıyla Eklendi!');
-                    //             }
-                    //             else {
-                    //                 alert('Ürün eklenirken hata oluştu!');
-                    //             }
-                    //         }
-                    //     };
-
-                    //     xhr.open('POST', '/HomeController/AdminPanelUrunAction', true); // burda sorun var
-                    //     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-
-                    //     var data = JSON.stringify({
-                    //         UrunAdi: urunAdi,
-                    //         UrunAciklamasi: urunAciklamasi,
-                    //         KategoriID: kategoriID,
-                    //         UrunFiyati: urunFiyati,
-                    //         UrunFotografi: urunFotografi
-                    //     });
-
-                    //     xhr.send(data);
-
-                    //     document.getElementById('UrunAdi').value = '';
-                    //     document.getElementById('UrunAciklamasi').value = '';
-                    //     document.getElementById('KategoriId').value = '';
-                    //     document.getElementById('UrunFiyati').value = '';
-                    //     document.getElementById('UrunFotografi').value = '';
-
-                    // }
-
-                </script>
-
                 <!-- Ekleme Pop Up Başlangıç -->
                 <div class="modal fade text-black" id="KategoriEkle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -297,7 +269,6 @@
                                     <div class="input-group mb-3">
                                         <label class="input-group-text" for="SelectKategori" style="width:30%;">Kategori</label> <!--  Veri tabanından çek  -->
                                         <select id="KategoriId" name="KategoriId" class="form-select" style="width:70%;">
-                                            <option id="yok">Test</option>
                                             @foreach (var kategori in Model.Item2)
                                             {
                                                 <option id="@kategori.KategoriId">@kategori.KategoriId- @kategori.KategoriAdi</option>
@@ -320,7 +291,7 @@
 
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                    <button id="iptal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
                                     <button id="UrunEkle" type="button" class="btn btn-success">Ekle</button>
                                 </div>
                             </form>
