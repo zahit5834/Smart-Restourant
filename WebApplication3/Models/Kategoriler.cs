@@ -9,30 +9,110 @@ namespace WebApplication3.Models
 
         List<Kategoriler> kategorilerListesi = new List<Kategoriler>();
 
-        public void KategoriEkle(int KategoriId, string KategoriAdi)
+        public void KategoriEkle(string KategoriAdi)
         {
-            Kategoriler kategoriler = new Kategoriler()
+            string query = "INSERT INTO Kategoriler( KategoriAdi ) VALUES ('" + KategoriAdi + "');";
+            Console.WriteLine(query);
+            string connectionString = $"Data Source=localhost;Initial Catalog=SR_db;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                KategoriId = KategoriId,
-                KategoriAdi = KategoriAdi,
-            };
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        int affectedRow = command.ExecuteNonQuery();
+
+                        if (affectedRow > 0)
+                        {
+                            Console.WriteLine("Kategori Eklendi");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Kategori Eklenemedi");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Hata:" + ex.Message);
+                    }
+
+                }
+
+            }
         }
 
         public void KategoriSil(int KategoriId)
         {
-            Kategoriler kategoriler = new Kategoriler()
+
+            string query = "DELETE FROM Kategoriler WHERE KategoriId = " + KategoriId + "; DELETE FROM Urunler WHERE KategoriID = " + KategoriId + ";";
+            Console.WriteLine(query);
+            string connectionString = $"Data Source=localhost;Initial Catalog=SR_db;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                KategoriId = KategoriId,
-            };
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        int affectedRow = command.ExecuteNonQuery();
+
+                        if (affectedRow > 0)
+                        {
+                            Console.WriteLine("Kategori Silindi");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Kategori Silinemedi");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Hata:" + ex.Message);
+                    }
+
+                }
+
+            }
         }
 
         public void KategoriGuncelle(int KategoriId, string KategoriAdi)
         {
-            Kategoriler kategoriler = new Kategoriler()
+
+            string query = "UPDATE Kategoriler SET KategoriAdi = '" + KategoriAdi + "' WHERE KategoriId = " + KategoriId + ";";
+
+            Console.WriteLine(query);
+            string connectionString = $"Data Source=localhost;Initial Catalog=SR_db;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                KategoriId = KategoriId,
-                KategoriAdi = KategoriAdi,
-            };
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        int affectedRow = command.ExecuteNonQuery();
+
+                        if (affectedRow > 0)
+                        {
+                            Console.WriteLine("Kategori Güncellendi");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Kategori Güncellenemedi");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Hata:" + ex.Message);
+                    }
+
+                }
+
+            }
+
         }
 
         public List<Kategoriler> KategorilerGetir()
@@ -47,11 +127,11 @@ namespace WebApplication3.Models
                 {
                     // Veri tabanına bağlantı sağlanıyor
                     connection.Open();
-                    if (connection.State!=0)
+                    if (connection.State != 0)
                     {
                         Console.WriteLine("Bağlantı başarıyla açıldı.");
                     }
-                    
+
 
                     SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.Kategoriler", connection);
                     SqlDataReader reader;
@@ -63,9 +143,10 @@ namespace WebApplication3.Models
                         {
                             KategoriId = Convert.ToInt32(reader["KategoriId"]),
                             KategoriAdi = reader["KategoriAdi"].ToString()
+
                         };
                         kategorilerListesi.Add(kategori);
-                        
+
                     }
                 }
                 catch (Exception ex)
@@ -79,7 +160,6 @@ namespace WebApplication3.Models
                 }
 
             }
-
             return kategorilerListesi;
 
         }

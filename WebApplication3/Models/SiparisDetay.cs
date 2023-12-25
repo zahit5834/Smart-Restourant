@@ -2,12 +2,12 @@
 {
     public class SiparisDetay
     {
-        private int DetayID { get; set; }
-        private int SiparisID { get; set; }
-        private int UrunId { get; set; }
-        private  int Adet {  get; set; }
-        private string? Durum { get; set; }
-        private string? Aciklama { get; set; }
+        public int DetayID { get; set; }
+        public int SiparisID { get; set; }
+        public int UrunId { get; set; }
+        public int Adet {  get; set; }
+        public string? Durum { get; set; }
+        public string? Aciklama { get; set; }
 
 
         public void SiparisDetayOlustur(int DetayID,int SiparisID,int UrunId,int Adet,string? Durum,string? Aciklama)

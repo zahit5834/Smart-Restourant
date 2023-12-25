@@ -54,7 +54,6 @@
                     <table class="table table-hover table-light mt-2">
                         <thead>
                             <tr>
-                                <th scope="col">Seç</th>
                                 <th scope="col">#ID</th>
                                 <th scope="col">Fotoğraf</th>
                                 <th scope="col">Ürün Adı</th>
@@ -82,7 +81,6 @@
                             @foreach (var urun in Model.Item1)
                             {
                                 <tr>
-                                    <td id="@urun.UrunId"><input onclick="urunSil(this, @urun.UrunId)" class="form-check-input" type="checkbox" /></td>
                                     <td scope="row">@urun.UrunId</td>
                                     <td>
                                         <img src="@urun.UrunFotografi" class="card-img-top" style="width:64px;" alt="...">
@@ -90,8 +88,8 @@
                                     <td>@urun.UrunAdi</td>
                                     <td>@urun.UrunAciklamasi</td>
                                     <td>@urun.KategoriAdi</td>
-                                    <td> <button  class="btn btn-dark bi-pencil"></button></td> <!-- data-bs-toggle="modal" data-bs-target="#KategoriGuncelle" -->
-                                    <td> <button onclick="urunSilModal(this, @urun.UrunId)" class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td> <!--  data-bs-toggle="modal" data-bs-target="#KategoriSil" -->
+                                    <td> <button onclick="urunGuncelleModal(@urun.UrunId)" class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#UrunGuncelle"></button></td> <!-- data-bs-toggle="modal" data-bs-target="#UrunGuncelle" -->
+                                    <td> <button onclick="urunSilModal(@urun.UrunId)" class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#UrunSil"></button></td> <!--  data-bs-toggle="modal" data-bs-target="#UrunSil" -->
                                 </tr>
                             }
                         </tbody>
@@ -101,19 +99,92 @@
 
                 <script>
 
-                    function urunSilModal(button, veri) {
-
-                        // SilinecekUrunId
-                        // Seçili checkbox'ın id'sini al
+                    function urunSilModal(veri) {
                         document.getElementById('SilinecekUrunId').value = veri;
                         console.log(veri);
 
-                    }
-                    // urun id çekildi ve silme işlemi yapılacak
+
+                    };
+                    function urunGuncelleModal(veri) {
+                        document.getElementById('GuncellenecekUrunId').value = veri;
+                        console.log(veri);
+                        //UrunGuncelle
+                    };
+
+                    function yenile() {
+                        location.reload();
+                    };
+
+                    function UrunSil() {
+                        var urunID = document.getElementById('SilinecekUrunId').value;
+
+                        var jsonData = {
+                            urunId: urunID
+                        };
+
+                        console.log(jsonData);
+
+                        $.ajax({
+                            url: '/Home/UrunActionSil',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: { jsonInput: JSON.stringify(jsonData) },
+                            success: function (result) {
+                                console.log(result.status + ' İşlem başarılı');
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                        location.reload();
+                    };
+
+                    function UrunGuncelle() {
+
+                        var selectElement = document.getElementById('GuncellenecekUrunKategoriId');
+
+                        // seçilen option'ın index'ini al
+                        var selectedIndex = selectElement.selectedIndex;
+
+                        // seçili option'ın id'sini al
+                        var selectedOptionId = selectElement.options[selectedIndex].id;
+
+                        var urunID = document.getElementById('GuncellenecekUrunId').value;
+                        var urunAdi = document.getElementById('GuncellenecekUrunAdi').value;
+                        var urunAciklamasi = document.getElementById('GuncellenecekUrunAciklamasi').value;
+                        var kategoriID = selectedOptionId;
+                        var urunFiyati = document.getElementById('GuncellenecekUrunFiyati').value;
+                        var urunFotografi = document.getElementById('GuncellenecekUrunFotografi').value;
+
+                        var jsonData = {
+                            urunId: urunID,
+                            urunAdi: urunAdi,
+                            urunAciklamasi: urunAciklamasi,
+                            kategoriID: kategoriID,
+                            urunFiyati: urunFiyati,
+                            urunFotografi: urunFotografi
+                        };
+                        console.log(jsonData);
+
+
+
+                        $.ajax({
+                            url: '/Home/UrunActionGuncelle',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: { jsonInput: JSON.stringify(jsonData) },
+                            success: function (result) {
+                                console.log(result.status + ' İşlem başarılı');
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                        location.reload();
+
+                    };
+
                     $(document).ready(function () {
-
-
-
 
                         $('#UrunEkle').on('click', function () {
 
@@ -161,83 +232,87 @@
                                     console.error(error);
                                 }
                             });
-                            location.reload();
+                            yenile();
                         });
 
-                        $('#iptal').on('click', function () {
-                            location.reload();
-                        });
+
                     });
                 </script>
 
                 <!-- Güncelleme Pop Up Başlangıç -->
-                <div class="modal fade text-black" id="KategoriGuncelle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade text-black" id="UrunGuncelle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="">Ürün Güncelle</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
 
-                                <div class="input-group mb-3 mt-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-default" style="width:30%;">ID</span>
-                                    <input type="text" class="form-control" style="width:70%;" value="2" disabled>
-                                </div>
+                            <form id="EkleForm" action="/Controllers/HomeController.cs" method="post">
+                                <div class="modal-body">
 
-                                <div class="input-group mb-3 mt-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-default" style="width:30%;">Ürün Adı</span>
-                                    <input type="text" class="form-control" style="width:70%;">
-                                </div>
+                                    <div class="input-group mb-3 mt-3">
+                                        <span class="input-group-text" id="inputGroup-sizing-default" style="width:30%;">ID</span>
+                                        <input id="GuncellenecekUrunId" type="text" class="form-control" style="width:70%;" disabled>
+                                    </div>
 
-                                <div class="input-group mb-3 mt-3">
-                                    <span class="input-group-text" style="width:30%;">Ürün Açıklaması</span>
-                                    <textarea class="form-control" aria-label="With textarea" style="width:70%;"></textarea>
-                                </div>
+                                    <div class="input-group mb-3 mt-3">
+                                        <span class="input-group-text" id="inputGroup-sizing-default" style="width:30%;">Ürün Adı</span>
+                                        <input id="GuncellenecekUrunAdi" type="text" class="form-control" style="width:70%;">
+                                    </div>
 
-                                <div class="input-group mb-3">
-                                    <label class="input-group-text" for="SelectKategori" style="width:30%;">Kategori</label>
-                                    <select class="form-select" id="KategoriSecimi" style="width:70%;">
-                                        <option value="1">Burger</option>
-                                        <option value="2">Çorba</option>
-                                        <option value="3">Sıcak İçecek</option>
-                                    </select>
-                                </div>
+                                    <div class="input-group mb-3 mt-3">
+                                        <span class="input-group-text" style="width:30%;">Ürün Açıklaması</span>
+                                        <textarea id="GuncellenecekUrunAciklamasi" class="form-control" aria-label="With textarea" style="width:70%;"></textarea>
+                                    </div>
 
-                                <div class="input-group mb-3 mt-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-default" style="width:30%;">Ürün Fiyatı</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width:70%;">
-                                </div>
+                                    <div class="input-group mb-3">
+                                        <label class="input-group-text" for="SelectKategori" style="width:30%;">Kategori</label>
+                                        <select id="GuncellenecekUrunKategoriId" name="KategoriId" class="form-select" style="width:70%;">
+                                            @foreach (var kategori in Model.Item2)
+                                            {
+                                                <option id="@kategori.KategoriId">@kategori.KategoriId- @kategori.KategoriAdi</option>
+                                            }
+                                        </select>
+                                    </div>
 
-                                <div class="input-group mb-3">
-                                    <label class="input-group-text" for="inputGroupFile01" style="width:30%;">Ürün Fotoğrafı</label>
-                                    <input type="file" class="form-control" id="inputGroupFile01" style="width:70%;">
+                                    <div class="input-group mb-3 mt-3">
+                                        <span class="input-group-text" id="inputGroup-sizing-default" style="width:30%;">Ürün Fiyatı</span>
+                                        <input id="GuncellenecekUrunFiyati" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width:70%;">
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <label class="input-group-text" for="inputGroupFile01" style="width:30%;">Ürün Fotoğrafı</label>
+                                        <input id="GuncellenecekUrunFotografi" type="file" class="form-control" id="inputGroupFile01" style="width:70%;">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="iptal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                                <button type="button" class="btn btn-success">Kaydet</button>
-                            </div>
+                                <div class="modal-footer">
+                                    <button onclick="yenile()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                    <button onclick="UrunGuncelle()" type="button" class="btn btn-success">Kaydet</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
                 <!-- Güncelleme Pop Up Bitiş -->
                 <!-- Silme Pop Up Başlangıç -->
-                <div class="modal fade text-black" id="KategoriSil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade text-black" id="UrunSil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="">Kategori Sil</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <h5>Bu Ürün Silinsin Mi ?</h5>
-                                <input type="text" id="SilinecekUrunId" name="SilinecekUrunId">
-                            </div>
-                            <div class="modal-footer">
-                                <button id="iptal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                                <button type="button" class="btn btn-danger">Sil</button>
-                            </div>
+                            <form id="EkleForm" action="/Controllers/HomeController.cs" method="post">
+                                <div class="modal-body">
+                                    <h5>Bu Ürün Silinsin Mi ?</h5>
+                                    <input type="hidden" id="SilinecekUrunId" name="SilinecekUrunId">
+                                </div>
+                                <div class="modal-footer">
+                                    <button onclick="yenile()" type="button" class="btn btn-secondary">İptal</button>
+                                    <button onclick="UrunSil()" type="button" class="btn btn-danger">Sil</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -291,7 +366,7 @@
 
                                 </div>
                                 <div class="modal-footer">
-                                    <button id="iptal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                    <button onclick="yenile()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
                                     <button id="UrunEkle" type="button" class="btn btn-success">Ekle</button>
                                 </div>
                             </form>

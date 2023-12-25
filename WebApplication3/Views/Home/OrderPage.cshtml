@@ -1,8 +1,10 @@
 ﻿@{
-ViewData["Title"] = "Sipariş Sayfası";
+    ViewData["Title"] = "Sipariş Sayfası";
 }
+
+@model Tuple<List<Urunler>, List<Kategoriler>>
 <nav class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
-    style="width: 280px; position: fixed; height:100%; overflow:auto;">
+     style="width: 280px; position: fixed; height:100%; overflow:auto;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <span class="fs-5 text-start">Smart Restourant Menü</span>
     </a>
@@ -11,31 +13,15 @@ ViewData["Title"] = "Sipariş Sayfası";
         Veri Tabanından Kategoriler çekilecek
     -->
     <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page">
-                Home
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link text-white">
-                Dashboard
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link text-white">
-                Orders
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link text-white">
-                Products
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link text-white">
-                Customers
-            </a>
-        </li>
+
+        @foreach (var kategori in Model.Item2)
+        {
+            <li>
+                <a href="#" class="nav-link text-white" aria-current="page">
+                    @kategori.KategoriAdi
+                </a>
+            </li>
+        }
     </ul>
 </nav>
 
@@ -53,12 +39,12 @@ ViewData["Title"] = "Sipariş Sayfası";
             <div class="modal-content bg-dark">
                 <div class="modal-header sticky-top">
                     <h5 class="modal-title text-white" id="exampleModalLabel">Sepet</h5>
-                    <button type="button" class="btn-light btn-close text-white"  data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-light btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body fixed-center">
 
                     <!-- Sepet içerik kartı Başlangıcı -->
-                    <div class="card mb-3" >
+                    <div class="card mb-3">
                         <div class="row g-0">
                             <div class="col-md-3">
                                 <div style="height:5%"></div>
@@ -75,7 +61,7 @@ ViewData["Title"] = "Sipariş Sayfası";
                                     </div>
                                     <div class="col-md-4">
                                         <div class="text-end">
-                                            <button type="button" class="btn btn-dark bi-trash-fill text-white" ></button>
+                                            <button type="button" class="btn btn-dark bi-trash-fill text-white"></button>
 
                                             <div class="input-group mt-2">
                                                 <div class="input-group-prepend">
@@ -83,7 +69,7 @@ ViewData["Title"] = "Sipariş Sayfası";
                                                 </div>
                                                 <input type="text" class="form-control" value="1">
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-dark bi-plus" ></button>
+                                                    <button class="btn btn-dark bi-plus"></button>
                                                 </div>
                                             </div>
                                             <p class=" mt-2" style="margin-left:-5rem;">Fiyat:250TL</p>
@@ -102,37 +88,63 @@ ViewData["Title"] = "Sipariş Sayfası";
                         <p class="text-white">Toplam: 3000TL</p> <!-- Sepet Fiyatı Toplamı burada -->
                         <button type="button" class="btn btn-success">Siparişi Tamamla</button>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Pop Up Sepet Bitişi -->
-
     <!-- Ürün Liste Başlangıç -->
-
     <div class="container mx-auto">
-        <div class="row mb-4"> <!-- Ürün Kartı Listesi Başlangıç -->
+
+
+
+        <!-- Ürün Kartı Listesi Başlangıç -->
+        <div class="row mb-4">
+
+            @foreach (var urun in Model.Item1)
+            {
+                <div class="col-md-auto mt-2 mb-2">
+                    <div class="card" style="width:15rem; height:22rem;">
+                        <img src="@urun.UrunFotografi" class="card-img-top"
+                             alt="..."><!--Veri Tabanından Fotoğraf bilgisi çekilecek -->
+                        <div class="card-body">
+                            <h5 class="card-title">@urun.UrunAdi</h5>
+                            <!--VT den Yiyecek bilgisi çekilecek -->
+                            <h6 class="card-subtitle mb-2">
+                                @urun.UrunAciklamasi
+                            </h6>
+                            <!-- VT den Yiyecek Açıklaması Girilecek. -->
+                        </div>
+                        <div class="card-footer">
+
+                            <div class="text-end">
+
+                                <button class="btn btn-outline-dark">Sipariş Ver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
 
             <!-- Ürün Kartı Başlangıç -->
-
-            <div class="col-md-auto"> 
+            <div class="col-md-auto mt-2 mb-2">
                 <div class="card" style="width:15rem; height:22rem;">
                     <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top"
-                        alt="..."><!--Veri Tabanından Fotoğraf bilgisi çekilecek -->
+                         alt="..."><!--Veri Tabanından Fotoğraf bilgisi çekilecek -->
                     <div class="card-body">
                         <h5 class="card-title">ÇITIR TAVUK BURGER</h5>
                         <!--VT den Yiyecek bilgisi çekilecek -->
-                        <h6 class="card-subtitle mb-2">Çıtır kalça eti, domates, göbek, tonkatsu sos;
-                            patates kızartması ile servis edilir.</h6>
+                        <h6 class="card-subtitle mb-2">
+                            Çıtır kalça eti, domates, göbek, tonkatsu sos;
+                            patates kızartması ile servis edilir.
+                        </h6>
                         <!-- VT den Yiyecek Açıklaması Girilecek. -->
-                        
                     </div>
                     <div class="card-footer">
-                        
+
                         <div class="text-end">
-                            
+
                             <button class="btn btn-outline-dark">Sipariş Ver</button>
                         </div>
                     </div>
@@ -140,68 +152,10 @@ ViewData["Title"] = "Sipariş Sayfası";
             </div>
 
             <!-- Ürün Kartı Bitiş -->
-
-            <div class="col-md-auto"> 
-                <div class="card" style="width:15rem; height:22rem;">
-                    <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top"
-                        alt="..."><!--Veri Tabanından Fotoğraf bilgisi çekilecek -->
-                    <div class="card-body">
-                        <h5 class="card-title">ÇITIR TAVUK BURGER</h5>
-                        <!--VT den Yiyecek bilgisi çekilecek -->
-                        <h6 class="card-subtitle mb-2">Çıtır kalça eti, domates, göbek, tonkatsu sos;
-                            patates kızartması ile servis edilir.</h6>
-                        <!-- VT den Yiyecek Açıklaması Girilecek. -->
-                        
-                    </div>
-                    <div class="card-footer">
-                        <div class="text-end">
-                            <button class="btn btn-outline-dark">Sipariş Ver</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-auto"> 
-                <div class="card" style="width:15rem; height:22rem;">
-                    <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top"
-                        alt="..."><!--Veri Tabanından Fotoğraf bilgisi çekilecek -->
-                    <div class="card-body">
-                        <h5 class="card-title">ÇITIR TAVUK BURGER</h5>
-                        <!--VT den Yiyecek bilgisi çekilecek -->
-                        <h6 class="card-subtitle mb-2">Çıtır kalça eti, domates, göbek, tonkatsu sos;
-                            patates kızartması ile servis edilir.</h6>
-                        <!-- VT den Yiyecek Açıklaması Girilecek. -->
-                        
-                    </div>
-                    <div class="card-footer">
-                        <div class="text-end">
-                            <button class="btn btn-outline-dark">Sipariş Ver</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-auto"> 
-                <div class="card" style="width:15rem; height:22rem;">
-                    <img src="https://i.imgur.com/JIA9UlL_d.webp" class="card-img-top"
-                        alt="..."><!--Veri Tabanından Fotoğraf bilgisi çekilecek -->
-                    <div class="card-body">
-                        <h5 class="card-title">ÇITIR TAVUK BURGER</h5>
-                        <!--VT den Yiyecek bilgisi çekilecek -->
-                        <h6 class="card-subtitle mb-2">Çıtır kalça eti, domates, göbek, tonkatsu sos;
-                            patates kızartması ile servis edilir.</h6>
-                        <!-- VT den Yiyecek Açıklaması Girilecek. -->
-                        
-                    </div>
-                    <div class="card-footer">
-                        <div class="text-end">
-                            <button class="btn btn-outline-dark">Sipariş Ver</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+
         <!-- Ürün Kartı Listesi Bitiş -->
     </div>
     <!-- Ürün Liste Bitiş -->
+
 </div>

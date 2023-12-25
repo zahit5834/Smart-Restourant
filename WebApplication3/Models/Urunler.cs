@@ -49,16 +49,7 @@ namespace WebApplication3.Models
         {
 
             Console.WriteLine(UrunAdi + " " + UrunAciklamasi + " " + KategoriId + " " + UrunFiyat + " " + UrunFotografi + "\n\n");
-            /*
-            Urunler urunler = new Urunler()
-            {
-                UrunAdi = UrunAdi,
-                UrunAciklamasi = UrunAciklamasi,
-                KategoriId = KategoriId,
-                UrunFiyat = UrunFiyat,
-                UrunFotografi = UrunFotografi
-            };
-            */
+            
             string? foto = FotografCek(UrunFotografi);
 
             //string query = "INSERT INTO Urunler (UrunAdi, UrunAciklamasi, KategoriID, UrunFiyati, UrunFotografi) VALUES (@UrunAdi, UrunAciklamasi, KategoriId, UrunFiyati, UrunFotografi)";
@@ -71,14 +62,6 @@ namespace WebApplication3.Models
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    /*
-                    command.Parameters.AddWithValue("@UrunAdi", UrunAdi);
-                    command.Parameters.AddWithValue("@UrunAciklamasi", UrunAciklamasi);
-                    command.Parameters.AddWithValue("@KategoriId", KategoriId);
-                    command.Parameters.AddWithValue("@UrunFiyati", UrunFiyat);
-                    command.Parameters.AddWithValue("@UrunFotografi", UrunFotografi);
-                    */
-
                     try
                     {
                         connection.Open();
@@ -105,23 +88,79 @@ namespace WebApplication3.Models
         }
         public void UrunSil(int UrunId)
         {
-            Urunler urunler = new Urunler()
+            string query = "DELETE FROM Urunler WHERE UrunId = " + UrunId + ";";
+            Console.WriteLine(query);
+            string connectionString = $"Data Source=localhost;Initial Catalog=SR_db;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                UrunId = UrunId
-            };
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        int affectedRow = command.ExecuteNonQuery();
+
+                        if (affectedRow > 0)
+                        {
+                            Console.WriteLine("Ürün Silindi");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ürün Silinemedi");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Hata:" + ex.Message);
+                    }
+
+                }
+
+            }
         }
 
-        public void UrunGuncelle(int UrunId, string UrunAdi, string UrunAciklamasi, string KategoriAdi, decimal UrunFiyat, string UrunFotografi)
+        public void UrunGuncelle(int UrunId, string UrunAdi, string UrunAciklamasi, int KategoriId, decimal UrunFiyat, string UrunFotografi)
         {
-            Urunler urunler = new Urunler()
+            
+
+            string? foto = FotografCek(UrunFotografi);
+
+
+
+            //string query = "INSERT INTO Urunler (UrunAdi, UrunAciklamasi, KategoriID, UrunFiyati, UrunFotografi) VALUES ('" + UrunAdi + "', '" + UrunAciklamasi + "', " + KategoriId + ", " + UrunFiyat + ", " + " '" + foto.ToString() + "');";
+            string query = "UPDATE Urunler SET UrunAdi = '" + UrunAdi + "',UrunAciklamasi = '" + UrunAciklamasi + "', KategoriID = '" + KategoriId + "', UrunFiyati= " + UrunFiyat + ", UrunFotografi= '" + foto.ToString() + "' WHERE UrunId = " + UrunId + ";";
+            
+            Console.WriteLine(query);
+            string connectionString = $"Data Source=localhost;Initial Catalog=SR_db;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                UrunId = UrunId,
-                UrunAdi = UrunAdi,
-                UrunAciklamasi = UrunAciklamasi,
-                KategoriAdi = KategoriAdi,
-                UrunFiyat = UrunFiyat,
-                UrunFotografi = UrunFotografi
-            };
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        int affectedRow = command.ExecuteNonQuery();
+
+                        if (affectedRow > 0)
+                        {
+                            Console.WriteLine("Ürün Eklendi");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ürün eklenemdi");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Hata:" + ex.Message);
+                    }
+
+                }
+
+            }
+
         }
 
 

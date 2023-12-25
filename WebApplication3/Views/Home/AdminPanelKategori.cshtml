@@ -2,6 +2,7 @@
     ViewData["Title"] = "AdminPanelKategori";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@model List<Kategoriler>
 <div>
     <div class="row">
         <div class="col-md-2">
@@ -12,7 +13,7 @@
                     <span class="fs-5 text-start">Admin Panel</span>
                 </a>
                 <hr>
-                
+
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li>
                         <a href="AdminPanelKategori" class="nav-link text-white">
@@ -58,25 +59,109 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <!-- Tablo Satırı Başlangıç -->
-                                <th scope="row">1</th>
-                                <td>Ana Yemek</td>
-                                <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#KategoriGuncelle"></button></td>
-                                <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td>
-                            </tr> <!-- Tablo Satırı Bitiş -->
-
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Tatlı</td>
-                                <td> <button class="btn btn-dark bi-pencil"></button></td>
-                                <td> <button class="btn btn-dark bi-trash"></button></td>
-                            </tr>
+                            @foreach (var kategori in Model)
+                            {
+                                <tr>
+                                    <th scope="row">@kategori.KategoriId</th>
+                                    <td>@kategori.KategoriAdi</td>
+                                    <td> <button onclick="kategoriGuncelleModal(@kategori.KategoriId)" class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#KategoriGuncelle"></button></td>
+                                    <td> <button onclick="kategoriSilModal(@kategori.KategoriId)" class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#KategoriSil"></button></td>
+                                </tr>
+                            }
 
                         </tbody>
                     </table>
                     <!-- Tablo Tablo Bitiş -->
                 </div>
+
+                <script>
+
+                    function kategoriGuncelleModal(veri) {
+                        
+                        document.getElementById('GuncellenecekKategoriId').value = veri;
+                        console.log(veri);
+                        //GuncellenecekKategoriId
+                    };
+                    function kategoriSilModal(veri) {
+                        document.getElementById('SilinecekKategoriId').value = veri;
+                        console.log(veri);
+                        
+                        //SilinecekUrunId
+                    };
+
+                    function kategoriGuncelle() {
+                        var KategoriId = document.getElementById('GuncellenecekKategoriId').value;
+                        var KategoriAdi = document.getElementById('GuncellenecekKategoriAdi').value;
+
+                        var jsonData = {
+                            kategoriId: KategoriId,
+                            kategoriAdi: KategoriAdi
+                        };
+
+                        $.ajax({
+                            url: '/Home/KategoriActionGuncelle',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: { jsonInput: JSON.stringify(jsonData) },
+                            success: function (result) {
+                                console.log(result.status + ' İşlem başarılı');
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                        location.reload();
+
+                    };
+
+                    function kategoriSil() {
+                        var KategoriId = document.getElementById('SilinecekKategoriId').value;
+
+                        var jsonData = {
+                            kategoriId: KategoriId,
+                        };
+
+                        $.ajax({
+                            url: '/Home/KategoriActionSil',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: { jsonInput: JSON.stringify(jsonData) },
+                            success: function (result) {
+                                console.log(result.status + ' İşlem başarılı');
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                        location.reload();
+                    };
+
+                    function kategoriEkle() {
+
+                        //EklenecekKategoriAdi
+                        var KategoriAdi = document.getElementById('EklenecekKategoriAdi').value;
+
+                        var jsonData = {
+                            kategoriAdi: KategoriAdi
+                        }
+
+                        $.ajax({
+                            url: '/Home/KategoriActionEkle',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: { jsonInput: JSON.stringify(jsonData) },
+                            success: function (result) {
+                                console.log(result.status + ' İşlem başarılı');
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                        location.reload();
+                    };
+
+
+                </script>
 
                 <!-- Güncelleme Pop Up Başlangıç -->
                 <div class="modal fade text-black" id="KategoriGuncelle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -89,13 +174,13 @@
                             <div class="modal-body">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">ID</span>
-                                    <input type="text" class="form-control" aria-label="ID" style="width:15%;" value="1" disabled>
-                                    <input type="text" class="form-control" aria-label="Name" style="width:75%;" value="Ana Yemek">
+                                    <input id="GuncellenecekKategoriId" type="text" class="form-control" aria-label="ID" style="width:15%;" value="1" disabled>
+                                    <input id="GuncellenecekKategoriAdi" type="text" class="form-control" aria-label="Name" style="width:75%;">
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                                <button type="button" class="btn btn-success">Kaydet</button>
+                                <button  type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                <button onclick="kategoriGuncelle()" type="button" class="btn btn-success">Kaydet</button>
                             </div>
                         </div>
                     </div>
@@ -111,10 +196,11 @@
                             </div>
                             <div class="modal-body">
                                 <h5>Bu Kategori Silinsin Mi ?</h5>
+                                <input type="hidden" id="SilinecekKategoriId" name="SilinecekKategoriId">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                                <button type="button" class="btn btn-danger">Sil</button>
+                                <button onclick="kategoriSil()" type="button" class="btn btn-danger">Sil</button>
                             </div>
                         </div>
                     </div>
@@ -131,12 +217,12 @@
                             <div class="modal-body">
                                 <div class="input-group mb-3 mt-3">
                                     <span class="input-group-text" id="inputGroup-sizing-default">Kategori Adı</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    <input id="EklenecekKategoriAdi" name="EklenecekKategoriAdi" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                                <button type="button" class="btn btn-success">Ekle</button>
+                                <button onclick="kategoriEkle()" type="button" class="btn btn-success">Ekle</button>
                             </div>
                         </div>
                     </div>

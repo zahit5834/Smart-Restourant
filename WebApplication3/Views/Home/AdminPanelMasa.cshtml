@@ -2,6 +2,7 @@
     ViewData["Title"] = "AdminPanelMasa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@model List<Masalar>
 
 <div>
     <div class="row">
@@ -60,25 +61,105 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <!-- Tablo Satırı Başlangıç -->
-                                <th scope="row">1</th>
-                                <td>101</td>
-                                <td> <button class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#MasaGuncelle"></button></td>
-                                <td> <button class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#MasaSil"></button></td>
-                            </tr> <!-- Tablo Satırı Bitiş -->
 
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Tatlı</td>
-                                <td> <button class="btn btn-dark bi-pencil"></button></td>
-                                <td> <button class="btn btn-dark bi-trash"></button></td>
-                            </tr>
+                            @foreach (var masa in Model)
+                            {
+                                <tr>
+                                    <th scope="row">@masa.MasaId </th>
+                                    <th>@masa.MasaAdi</th>
+                                    <td><button onclick="masaGuncelleModal(@masa.MasaId)" class="btn btn-dark bi-pencil" data-bs-toggle="modal" data-bs-target="#MasaGuncelle"></button></td>
+                                    <td><button onclick="masaSilModal(@masa.MasaId)" class="btn btn-dark bi-trash" data-bs-toggle="modal" data-bs-target="#MasaSil"></button></td>
+                                </tr>
+                            }
 
                         </tbody>
                     </table>
                     <!-- Tablo Tablo Bitiş -->
                 </div>
+
+
+                <script>
+
+                    function masaSilModal(veri) {
+                        document.getElementById('SilinecekMasaId').value = veri;
+                        console.log(veri);
+                    };
+
+                    function masaSil() {
+                        var MasaId = document.getElementById('SilinecekMasaId').value;
+
+                        var jsonData = {
+                            masaId: MasaId
+                        };
+                        $.ajax({
+                            url: '/Home/MasaActionSil',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: { jsonInput: JSON.stringify(jsonData) },
+                            success: function (result) {
+                                console.log(result.status + ' İşlem başarılı');
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                       location.reload();
+                    };
+
+                    function masaGuncelleModal(veri) {
+                        document.getElementById('GuncellenecekMasaId').value = veri;
+                        console.log(veri);
+                    };
+
+                    function masaGuncelle() {
+                        var MasaId = document.getElementById('GuncellenecekMasaId').value;
+                        var MasaAdi = document.getElementById('GuncellenecekMasaAdi').value;
+
+                        var jsonData = {
+                            masaId: MasaId,
+                            masaAdi: MasaAdi
+                        };
+
+                        $.ajax({
+                            url: '/Home/MasaActionGuncelle',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: { jsonInput: JSON.stringify(jsonData) },
+                            success: function (result) {
+                                console.log(result.status + ' İşlem başarılı');
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                        location.reload();
+                    };
+
+                    function masaEkle() {
+
+                        //EklenecekKategoriAdi
+                        var MasaAdi = document.getElementById('EklenecekMasaAdi').value;
+
+                        var jsonData = {
+                            masaAdi: MasaAdi
+                        }
+
+                        $.ajax({
+                            url: '/Home/MasaActionEkle',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: { jsonInput: JSON.stringify(jsonData) },
+                            success: function (result) {
+                                console.log(result.status + ' İşlem başarılı');
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                       location.reload();
+                    };
+
+                </script>
 
                 <!-- Güncelleme Pop Up Başlangıç -->
                 <div class="modal fade text-black" id="MasaGuncelle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -91,13 +172,13 @@
                             <div class="modal-body">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">ID</span>
-                                    <input type="text" class="form-control" aria-label="ID" style="width:15%;" value="1" disabled>
-                                    <input type="text" class="form-control" aria-label="Name" style="width:75%;" value="101">
+                                    <input id="GuncellenecekMasaId" name="GuncellenecekMasaId" type="text" class="form-control" aria-label="ID" style="width:15%;" disabled>
+                                    <input id="GuncellenecekMasaAdi" name="GuncellenecekMasaAdi" type="text" class="form-control" aria-label="Name" style="width:75%;">
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                                <button type="button" class="btn btn-success">Kaydet</button>
+                                <button onclick="masaGuncelle()" type="button" class="btn btn-success">Kaydet</button>
                             </div>
                         </div>
                     </div>
@@ -113,10 +194,11 @@
                             </div>
                             <div class="modal-body">
                                 <h5>Bu Masa Silinsin Mi ?</h5>
+                                <input type="hidden" id="SilinecekMasaId" name="SilinecekMasaId">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                                <button type="button" class="btn btn-danger">Sil</button>
+                                <button onclick="masaSil()" type="button" class="btn btn-danger">Sil</button>
                             </div>
                         </div>
                     </div>
@@ -133,12 +215,12 @@
                             <div class="modal-body">
                                 <div class="input-group mb-3 mt-3">
                                     <span class="input-group-text" id="inputGroup-sizing-default">Masa Adı</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    <input id="EklenecekMasaAdi" name="EklenecekMasaAdi" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                                <button type="button" class="btn btn-success">Ekle</button>
+                                <button onclick="masaEkle()" type="button" class="btn btn-success">Ekle</button>
                             </div>
                         </div>
                     </div>
