@@ -75,15 +75,11 @@ namespace WebApplication3.Controllers
                 
 
 
-                //Urunler urun = new Urunler();
-                //urun.UrunOlustur(model.UrunAdi.ToString(), model.UrunAciklamasi.ToString(), Convert.ToInt32(model.KategoriId), Convert.ToDecimal(model.UrunFiyat), model.UrunFotografi.ToString());
 
 
                 return Json(new { success = true });
             }
             return Json(new { success = false });
-
-
         }
 
         public IActionResult AdminPanelMasa()
